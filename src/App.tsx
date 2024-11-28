@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card } from "./components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Experience,
   Education,
@@ -24,7 +24,7 @@ import { Moon, Sun } from "lucide-react";
 const App = () => {
 
   const [currentResumeIndex, setCurrentResumeIndex] = useState(0);
-  const [currentResumeName, setCurrentResumeName] = useState();
+  const [currentResumeName, setCurrentResumeName] = useState<string>("");
   const [savedResumes, setSavedResumes] = useState<string[]>([]);
 
   const [personalInfo, setPersonalInfo] = React.useState<PersonalInformation>({
@@ -74,7 +74,7 @@ const App = () => {
       setLanguages(parsedResumeData.languages);
       setInitialLoad(false);
     }
-  }, []);
+  }, [currentResumeIndex]);
 
   React.useEffect(() => {
     if (initialLoad) return;
@@ -168,6 +168,7 @@ const App = () => {
         </div>
 
         <PreviewSection
+          resumeName={currentResumeName}
           personalInformation={personalInfo}
           experiences={experiences}
           education={education}

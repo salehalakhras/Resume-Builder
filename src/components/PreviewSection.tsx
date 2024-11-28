@@ -6,6 +6,7 @@ import { ResumeData } from "../types";
 import html2pdf from "html2pdf.js";
 
 const PreviewSection = ({
+  resumeName,
   personalInformation,
   experiences,
   education,
@@ -34,11 +35,15 @@ const PreviewSection = ({
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Preview</h2>
+          <h2 className="text-xl">{resumeName}</h2>
           <Button onClick={generatePDF} className="font-bold">
             <Download className="w-4 h-4 mr-2" /> Download PDF
           </Button>
         </div>
-        <div id="resume-preview" className="space-y-6 rounded-lg border border-slate-300 p-6 shadow-lg dark:border-slate-700 h-screen">
+        <div
+          id="resume-preview"
+          className="space-y-6 rounded-lg border border-slate-300 p-6 shadow-lg dark:border-slate-700 h-screen"
+        >
           <div className="text-center">
             <h1 className="text-3xl font-bold">
               {personalInformation.fullName || "Your Name"}
