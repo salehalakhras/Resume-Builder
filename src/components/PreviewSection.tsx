@@ -5,7 +5,7 @@ import { ResumeData } from "../types";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
 
-const PreviewSection = ({ personalInformation, experiences, education, projects} : ResumeData) => {
+const PreviewSection = ({ personalInformation, experiences, education, projects, skills, certifications, languages } : ResumeData) => {
   const generatePDF = () => {
     const element = document.getElementById("resume-preview");
     if (!element) return;
@@ -104,6 +104,47 @@ const PreviewSection = ({ personalInformation, experiences, education, projects}
                   <div className="text-gray-600">{proj.description}</div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {skills.length > 0 && (
+            <div>
+              <h2 className="text-xl font-bold border-b mb-2">Skills</h2>
+              <ul className="grid grid-cols-2">
+                {skills.map((skill) => (
+                  <li key={skill.id} className="text-sm">
+                    {skill.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {certifications.length > 0 && (
+            <div>
+              <h2 className="text-xl font-bold border-b mb-2">Certifications</h2>
+              {certifications.map((cert) => (
+                <div key={cert.id} className="mb-4">
+                  <div className="flex justify-between">
+                    <strong>{cert.name}</strong>
+                    <span>{cert.issuer}</span>
+                  </div>
+                  <div className="text-gray-600">{cert.date}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {languages.length > 0 && (
+            <div>
+              <h2 className="text-xl font-bold border-b mb-2">Languages</h2>
+              <ul className="grid grid-cols-2">
+                {languages.map((lang) => (
+                  <li key={lang.id} className="text-sm">
+                    {lang.name} - {lang.proficiency}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

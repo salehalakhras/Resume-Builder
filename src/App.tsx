@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Card } from "./components/ui/card";
 import {
   Experience,
   Education,
@@ -16,6 +17,8 @@ import SkillsForm from "./components/SkillsForm";
 import ProjectsForm from "./components/ProjectsForm";
 import CertificationForm from "./components/CertificationForm";
 import LanguageForm from "./components/LanguageForm";
+import { Button } from "./components/ui/button";
+import { Moon, Sun } from "lucide-react";
 
 const App = () => {
   const [personalInfo, setPersonalInfo] = React.useState<PersonalInformation>({
@@ -38,7 +41,16 @@ const App = () => {
   const [languages, setLanguages] = useState<Language[]>([]);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 p-6 bg-slate-200">
+    <>
+    <Card className="p-4 flex justify-between">
+      <h1 className="text-2xl font-bold">Resume Builder</h1>
+      <Button size={"sm"}
+        onClick={() => document.documentElement.classList.toggle("dark")}>
+        <Sun color="white"/>
+        <Moon color="black"/>
+      </Button>
+    </Card>
+    <div className="flex flex-col lg:flex-row gap-8 p-6 bg-slate-200 dark:bg-slate-900">
       <div className="w-full lg:w-1/2 space-y-6">
         <PersonalInformationForm
           personalInfo={personalInfo}
@@ -77,6 +89,7 @@ const App = () => {
         languages={languages}
       ></PreviewSection>
     </div>
+    </>
   );
 };
 
