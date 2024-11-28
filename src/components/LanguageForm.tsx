@@ -12,14 +12,18 @@ const LanguageForm = ({
   languages: Language[];
   setLanguages: React.Dispatch<React.SetStateAction<Language[]>>;
 }) => {
-
   const addLanguage = () => {
-    setLanguages([...languages, { id: Date.now(), name: "", proficiency: "Professional" }]);
+    setLanguages([
+      ...languages,
+      { id: Date.now(), name: "", proficiency: "Professional" },
+    ]);
   };
 
   const updateLanguage = (id: number, field: keyof Language, value: string) => {
     setLanguages(
-      languages.map((lang) => (lang.id === id ? { ...lang, [field]: value } : lang))
+      languages.map((lang) =>
+        lang.id === id ? { ...lang, [field]: value } : lang
+      )
     );
   };
 
@@ -31,10 +35,7 @@ const LanguageForm = ({
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Languages</h2>
-        <Button
-          onClick={addLanguage}
-          size="sm"
-        >
+        <Button onClick={addLanguage} size="sm" className="font-bold">
           <Plus className="w-4 h-4 mr-2" /> Add Language
         </Button>
       </div>
@@ -43,9 +44,7 @@ const LanguageForm = ({
           <Input
             placeholder="Language"
             value={lang.name}
-            onChange={(e) =>
-              updateLanguage(lang.id, "name", e.target.value)
-            }
+            onChange={(e) => updateLanguage(lang.id, "name", e.target.value)}
             className="flex-grow"
           />
           <select

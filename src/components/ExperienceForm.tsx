@@ -41,7 +41,8 @@ const ExperienceForm = ({ experiences, setExperiences } : { experiences: Experie
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Experience</h2>
-        <Button onClick={addExperience} size="sm">
+        <Button onClick={addExperience} size="sm"
+        className="font-bold">
           <Plus className="w-4 h-4 mr-2" /> Add Experience
         </Button>
       </div>

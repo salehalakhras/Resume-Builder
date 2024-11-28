@@ -12,30 +12,27 @@ const SkillsForm = ({
   skills: Skill[];
   setSkills: React.Dispatch<React.SetStateAction<Skill[]>>;
 }) => {
-
-
   const addSkill = () => {
     setSkills([...skills, { id: Date.now(), name: "", level: "Intermediate" }]);
   };
 
   const updateSkill = (id: number, field: keyof Skill, value: string) => {
     setSkills(
-      skills.map((skill) => (skill.id === id ? { ...skill, [field]: value } : skill))
+      skills.map((skill) =>
+        skill.id === id ? { ...skill, [field]: value } : skill
+      )
     );
   };
 
   const removeSkill = (id: number) => {
     setSkills(skills.filter((skill) => skill.id !== id));
-  }
+  };
 
   return (
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Skills</h2>
-        <Button
-          onClick={addSkill}
-          size="sm"
-        >
+        <Button onClick={addSkill} size="sm" className="font-bold">
           <Plus className="w-4 h-4 mr-2" /> Add Skill
         </Button>
       </div>
@@ -44,16 +41,12 @@ const SkillsForm = ({
           <Input
             placeholder="Skill Name"
             value={skill.name}
-            onChange={(e) =>
-              updateSkill(skill.id, "name", e.target.value)
-            }
+            onChange={(e) => updateSkill(skill.id, "name", e.target.value)}
             className="flex-grow"
           />
           <select
             value={skill.level}
-            onChange={(e) =>
-              updateSkill(skill.id, "level", e.target.value)
-            }
+            onChange={(e) => updateSkill(skill.id, "level", e.target.value)}
             className="border rounded p-2"
           >
             <option value="Beginner">Beginner</option>

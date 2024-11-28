@@ -28,6 +28,7 @@ const CertificationForm = ({ certifications, setCertifications } : { certificati
       <Button
         onClick={addCertification}
         size="sm"
+        className="font-bold"
       >
         <Plus className="w-4 h-4 mr-2" /> Add Certification
       </Button>

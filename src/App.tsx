@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Card } from "./components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Experience,
   Education,
@@ -21,6 +22,11 @@ import { Button } from "./components/ui/button";
 import { Moon, Sun } from "lucide-react";
 
 const App = () => {
+
+  const [currentResumeIndex, setCurrentResumeIndex] = useState(0);
+  const [currentResumeName, setCurrentResumeName] = useState();
+  const [savedResumes, setSavedResumes] = useState<string[]>([]);
+
   const [personalInfo, setPersonalInfo] = React.useState<PersonalInformation>({
     fullName: "",
     title: "",
@@ -39,56 +45,138 @@ const App = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [certifications, setCertifications] = useState<Certification[]>([]);
   const [languages, setLanguages] = useState<Language[]>([]);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  React.useEffect(() => {
+    const resumeData = localStorage.getItem(`resumeData ${currentResumeIndex}`);
+    const resumeNames = localStorage.getItem("resumeNames");
+
+    if (resumeNames) {
+      setSavedResumes(JSON.parse(resumeNames));
+    }
+
+    const darkMode = localStorage.getItem("darkMode");
+    if (darkMode) {
+      setDarkMode(JSON.parse(darkMode));
+    }
+
+    if (resumeData) {
+      const parsedResumeData = JSON.parse(resumeData);
+      setCurrentResumeName(parsedResumeData.resumeName);
+      setPersonalInfo(parsedResumeData.personalInfo);
+      setExperiences(parsedResumeData.experiences);
+      setEducation(parsedResumeData.education);
+      setProjects(parsedResumeData.projects);
+      setSkills(parsedResumeData.skills);
+      setCertifications(parsedResumeData.certifications);
+      setLanguages(parsedResumeData.languages);
+      setInitialLoad(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (initialLoad) return;
+    localStorage.setItem(
+      `resumeData ${currentResumeIndex}`,
+      JSON.stringify({
+        currentResumeName,
+        personalInfo,
+        experiences,
+        education,
+        projects,
+        skills,
+        certifications,
+        languages,
+      })
+    );
+  }, [
+    personalInfo,
+    experiences,
+    education,
+    projects,
+    skills,
+    certifications,
+    languages,
+    initialLoad,
+    currentResumeName,
+    currentResumeIndex,
+  ]);
+
+  React.useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.removeItem("darkMode");
+    }
+  }, [darkMode]);
 
   return (
     <>
-    <Card className="p-4 flex justify-between">
-      <h1 className="text-2xl font-bold">Resume Builder</h1>
-      <Button size={"sm"}
-        onClick={() => document.documentElement.classList.toggle("dark")}>
-        <Sun color="white"/>
-        <Moon color="black"/>
-      </Button>
-    </Card>
-    <div className="flex flex-col lg:flex-row gap-8 p-6 bg-slate-200 dark:bg-slate-900">
-      <div className="w-full lg:w-1/2 space-y-6">
-        <PersonalInformationForm
-          personalInfo={personalInfo}
-          setPersonalInfo={setPersonalInfo}
-        ></PersonalInformationForm>
-        <ExperienceForm
-          experiences={experiences}
-          setExperiences={setExperiences}
-        ></ExperienceForm>
-        <EducationForm
-          education={education}
-          setEducation={setEducation}
-        ></EducationForm>
-        <SkillsForm skills={skills} setSkills={setSkills}></SkillsForm>
-        <ProjectsForm
-          projects={projects}
-          setProjects={setProjects}
-        ></ProjectsForm>
-        <CertificationForm
-          certifications={certifications}
-          setCertifications={setCertifications}
-        ></CertificationForm>
-        <LanguageForm
-          languages={languages}
-          setLanguages={setLanguages}
-        ></LanguageForm>
-      </div>
+      <Card className="p-4 flex justify-between">
+        <h1 className="text-2xl font-bold">Resume Builder</h1>
+        <Tabs defaultValue="0" className="">
+          <TabsList>
+            {savedResumes.map((resumeName, index) => (
+              <TabsTrigger onClick={() => setCurrentResumeIndex(index)} key={index} value={index.toString()}>
+                {resumeName}
+              </TabsTrigger>
+            ))} : <TabsTrigger onClick={() => setCurrentResumeIndex(0)} value="0">New Resume</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Button
+          size={"sm"}
+          onClick={() => {
+            document.documentElement.classList.toggle("dark");
+            setDarkMode(!darkMode);
+          }}
+        >
+          <Sun color="white" />
+          <Moon color="black" />
+        </Button>
+      </Card>
+      <div className="flex flex-col lg:flex-row gap-8 p-6 bg-slate-200 dark:bg-slate-900">
+        <div className="w-full lg:w-1/2 space-y-6">
+          <PersonalInformationForm
+            personalInfo={personalInfo}
+            setPersonalInfo={setPersonalInfo}
+          ></PersonalInformationForm>
+          <ExperienceForm
+            experiences={experiences}
+            setExperiences={setExperiences}
+          ></ExperienceForm>
+          <EducationForm
+            education={education}
+            setEducation={setEducation}
+          ></EducationForm>
+          <SkillsForm skills={skills} setSkills={setSkills}></SkillsForm>
+          <ProjectsForm
+            projects={projects}
+            setProjects={setProjects}
+          ></ProjectsForm>
+          <CertificationForm
+            certifications={certifications}
+            setCertifications={setCertifications}
+          ></CertificationForm>
+          <LanguageForm
+            languages={languages}
+            setLanguages={setLanguages}
+          ></LanguageForm>
+        </div>
 
-      <PreviewSection
-        personalInformation={personalInfo}
-        experiences={experiences}
-        education={education}
-        projects={projects}
-        skills={skills}
-        certifications={certifications}
-        languages={languages}
-      ></PreviewSection>
-    </div>
+        <PreviewSection
+          personalInformation={personalInfo}
+          experiences={experiences}
+          education={education}
+          projects={projects}
+          skills={skills}
+          certifications={certifications}
+          languages={languages}
+        ></PreviewSection>
+      </div>
     </>
   );
 };

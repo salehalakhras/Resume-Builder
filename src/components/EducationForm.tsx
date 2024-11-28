@@ -12,7 +12,6 @@ const EducationForm = ({
   education: Education[];
   setEducation: React.Dispatch<React.SetStateAction<Education[]>>;
 }) => {
-    
   const addEducation = () => {
     setEducation([
       ...education,
@@ -43,7 +42,7 @@ const EducationForm = ({
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Education</h2>
-        <Button onClick={addEducation} size="sm">
+        <Button onClick={addEducation} size="sm" className="font-bold">
           <Plus className="w-4 h-4 mr-2" /> Add Education
         </Button>
       </div>

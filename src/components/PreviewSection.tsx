@@ -5,7 +5,15 @@ import { ResumeData } from "../types";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
 
-const PreviewSection = ({ personalInformation, experiences, education, projects, skills, certifications, languages } : ResumeData) => {
+const PreviewSection = ({
+  personalInformation,
+  experiences,
+  education,
+  projects,
+  skills,
+  certifications,
+  languages,
+}: ResumeData) => {
   const generatePDF = () => {
     const element = document.getElementById("resume-preview");
     if (!element) return;
@@ -26,17 +34,21 @@ const PreviewSection = ({ personalInformation, experiences, education, projects,
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Preview</h2>
-          <Button onClick={generatePDF}>
+          <Button onClick={generatePDF} className="font-bold">
             <Download className="w-4 h-4 mr-2" /> Download PDF
           </Button>
         </div>
-        <div id="resume-preview" className="space-y-6">
+        <div id="resume-preview" className="space-y-6 rounded-lg border border-slate-300 p-6 shadow-lg dark:border-slate-700 h-screen">
           <div className="text-center">
             <h1 className="text-3xl font-bold">
               {personalInformation.fullName || "Your Name"}
             </h1>
             <p className="text-gray-600">
-              {[personalInformation.email, personalInformation.phone, personalInformation.location]
+              {[
+                personalInformation.email,
+                personalInformation.phone,
+                personalInformation.location,
+              ]
                 .filter(Boolean)
                 .join(" • ")}
             </p>
@@ -96,7 +108,11 @@ const PreviewSection = ({ personalInformation, experiences, education, projects,
                   </div>
                   {proj.link && (
                     <div className="text-sm italic text-blue-700 ">
-                      <a href={proj.link} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {proj.link}
                       </a>
                     </div>
@@ -122,7 +138,9 @@ const PreviewSection = ({ personalInformation, experiences, education, projects,
 
           {certifications.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold border-b mb-2">Certifications</h2>
+              <h2 className="text-xl font-bold border-b mb-2">
+                Certifications
+              </h2>
               {certifications.map((cert) => (
                 <div key={cert.id} className="mb-4">
                   <div className="flex justify-between">

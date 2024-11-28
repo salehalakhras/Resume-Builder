@@ -50,6 +50,7 @@ const ProjectsForm = ({
         <Button
           onClick={addProject}
           size="sm"
+          className="font-bold"
         >
           <Plus className="w-4 h-4 mr-2" /> Add Project
         </Button>
