@@ -11,8 +11,6 @@ const PersonalInformationForm = ({
   personalInfo: PersonalInformation;
   setPersonalInfo: React.Dispatch<React.SetStateAction<PersonalInformation>>;
 }) => {
-
-
   const handlePersonalInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -33,22 +31,50 @@ const PersonalInformationForm = ({
           onChange={handlePersonalInfoChange}
         />
         <Input
-          placeholder="Email"
-          name="email"
-          type="email"
-          value={personalInfo.email}
+          placeholder="Professional Title"
+          name="title"
+          value={personalInfo.title}
           onChange={handlePersonalInfoChange}
         />
-        <Input
-          placeholder="Phone"
-          name="phone"
-          value={personalInfo.phone}
-          onChange={handlePersonalInfoChange}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <Input
+            placeholder="Email"
+            name="email"
+            type="email"
+            value={personalInfo.email}
+            onChange={handlePersonalInfoChange}
+          />
+          <Input
+            placeholder="Phone"
+            name="phone"
+            value={personalInfo.phone}
+            onChange={handlePersonalInfoChange}
+          />
+        </div>
         <Input
           placeholder="Location"
           name="location"
           value={personalInfo.location}
+          onChange={handlePersonalInfoChange}
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <Input
+            placeholder="LinkedIn URL"
+            name="linkedin"
+            value={personalInfo.linkedin}
+            onChange={handlePersonalInfoChange}
+          />
+          <Input
+            placeholder="GitHub URL"
+            name="github"
+            value={personalInfo.github}
+            onChange={handlePersonalInfoChange}
+          />
+        </div>
+        <Input
+          placeholder="Personal Website"
+          name="website"
+          value={personalInfo.website}
           onChange={handlePersonalInfoChange}
         />
         <Textarea

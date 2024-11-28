@@ -1,19 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
-import { Experience, Education, PersonalInformation } from "../types";
+import { ResumeData } from "../types";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
 
-const PreviewSection = ({
-  personalInfo,
-  experiences,
-  education,
-}: {
-  personalInfo: PersonalInformation;
-  experiences: Experience[];
-  education: Education[];
-}) => {
+const PreviewSection = ({ personalInformation, experiences, education, projects} : ResumeData) => {
   const generatePDF = () => {
     const element = document.getElementById("resume-preview");
     if (!element) return;
@@ -41,21 +33,21 @@ const PreviewSection = ({
         <div id="resume-preview" className="space-y-6">
           <div className="text-center">
             <h1 className="text-3xl font-bold">
-              {personalInfo.fullName || "Your Name"}
+              {personalInformation.fullName || "Your Name"}
             </h1>
             <p className="text-gray-600">
-              {[personalInfo.email, personalInfo.phone, personalInfo.location]
+              {[personalInformation.email, personalInformation.phone, personalInformation.location]
                 .filter(Boolean)
                 .join(" • ")}
             </p>
           </div>
 
-          {personalInfo.summary && (
+          {personalInformation.summary && (
             <div>
               <h2 className="text-xl font-bold border-b mb-2">
                 Professional Summary
               </h2>
-              <p className="text-wrap">{personalInfo.summary}</p>
+              <p className="text-wrap">{personalInformation.summary}</p>
             </div>
           )}
 
@@ -87,6 +79,29 @@ const PreviewSection = ({
                     <span>{edu.school}</span>
                   </div>
                   <div className="text-gray-600">{edu.graduationDate}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {projects.length > 0 && (
+            <div>
+              <h2 className="text-xl font-bold border-b mb-2">Projects</h2>
+              {projects.map((proj) => (
+                <div key={proj.id} className="mb-4">
+                  <div className="flex gap-4">
+                    <strong>{proj.name}</strong>
+                    <span>|</span>
+                    <span>{proj.technologies}</span>
+                  </div>
+                  {proj.link && (
+                    <div className="text-sm italic text-blue-700 ">
+                      <a href={proj.link} target="_blank" rel="noopener noreferrer">
+                        {proj.link}
+                      </a>
+                    </div>
+                  )}
+                  <div className="text-gray-600">{proj.description}</div>
                 </div>
               ))}
             </div>
