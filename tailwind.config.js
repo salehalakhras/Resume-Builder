@@ -7,6 +7,9 @@
       ],
       theme: {
       	extend: {
+			fontFamily: {
+				merri: ['Merriweather', 'serif'],
+			},
       		borderRadius: {
       			lg: 'var(--radius)',
       			md: 'calc(var(--radius) - 2px)',

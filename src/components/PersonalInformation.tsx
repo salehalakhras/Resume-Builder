@@ -65,7 +65,7 @@ const PersonalInformationForm = ({
             onChange={handlePersonalInfoChange}
           />
           <Input
-            placeholder="GitHub URL"
+            placeholder="GitHub Username"
             name="github"
             value={personalInfo.github}
             onChange={handlePersonalInfoChange}

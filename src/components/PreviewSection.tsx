@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Download, Maximize2, ZoomOut, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import { Download, Maximize2, ZoomOut, ZoomIn, ChevronLeft, ChevronRight, Linkedin, Github, Globe } from "lucide-react";
 import { ResumeData } from "../types";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
@@ -126,8 +126,8 @@ const PreviewSection = ({
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
-                    {/* Preview Scale Controls */}
-                    <div className="flex justify-center gap-4">
+          {/* Preview Scale Controls */}
+          <div className="flex justify-center gap-4">
             <ZoomOut className="w-4 h-4" />
             <Slider
               value={[scale]}
@@ -164,7 +164,7 @@ const PreviewSection = ({
             <div
               id="resume-preview"
               ref={contentRef}
-              className="h-full w-full p-6 dark:text-black"
+              className="h-full w-full p-6 dark:text-black font-merri"
               style={{
                 transform: `scale(${contentScale})`,
                 transformOrigin: 'top center',
@@ -172,10 +172,11 @@ const PreviewSection = ({
               }}
             >
               <div className="text-center">
-                <h1 className="text-3xl font-bold">
+                <h1 className="text-3xl font-semibold">
                   {personalInformation.fullName || "Your Name"}
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-gray-800">{personalInformation.title}</p>
+                <p className="text-gray-600 text-sm">
                   {[
                     personalInformation.email,
                     personalInformation.phone,
@@ -184,11 +185,57 @@ const PreviewSection = ({
                     .filter(Boolean)
                     .join(" • ")}
                 </p>
+                <p className="text-gray-600 text-sm italic gap-2 flex items-center justify-center">
+                  {personalInformation.github && (
+                    <>
+                      <Github className="w-4 h-4 inline-block"></Github>
+                      <a
+                        href={"https://github.com/" + personalInformation.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        {personalInformation.github}
+                      </a>
+                    </>
+
+                  )}
+
+                  {personalInformation.linkedin && (
+                    <>
+                      <Linkedin className="w-4 h-4 inline-block"></Linkedin>
+                      <a
+                        href={personalInformation.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        {personalInformation.linkedin}
+                      </a>
+
+                    </>
+
+                  )}
+                  {personalInformation.website && (
+                    <>
+                      <Globe className="w-4 h-4 inline-block"></Globe>
+                      <a
+                        href={personalInformation.website}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        {personalInformation.website}
+                      </a>
+                    </>
+
+                  )}
+                </p>
               </div>
 
               {personalInformation.summary && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">
+                  <h2 className="text-xl font-bold border-b mb-2 mt-2">
                     Professional Summary
                   </h2>
                   <p className="text-wrap">{personalInformation.summary}</p>
