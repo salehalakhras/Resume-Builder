@@ -12,9 +12,6 @@ const PAGE_HEIGHT = 297 //mm
 
 const PreviewSection = ({
   resumeName,
-  personalInformation,
-  experiences,
-  education,
   projects,
   skills,
   certifications,

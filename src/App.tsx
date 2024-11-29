@@ -4,7 +4,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -31,7 +30,6 @@ import { Button } from "./components/ui/button";
 import { Moon, Sun, File, Copy, Trash2, MoreVertical } from "lucide-react";
 import useInitializeApp from "./components/useInitializeApp";
 
-const PAGE_HEIGHT = 297; // mm
 const CONTENT_HEIGHT = 277; // mm (excluding margins)
 
 const App = () => {
