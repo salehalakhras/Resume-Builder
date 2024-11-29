@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Card } from "./components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Experience,
   Education,
@@ -9,6 +16,7 @@ import {
   Skill,
   Certification,
   Language,
+  ResumeData,
 } from "./types";
 import PersonalInformationForm from "./components/PersonalInformation";
 import ExperienceForm from "./components/ExperienceForm";
@@ -18,14 +26,108 @@ import SkillsForm from "./components/SkillsForm";
 import ProjectsForm from "./components/ProjectsForm";
 import CertificationForm from "./components/CertificationForm";
 import LanguageForm from "./components/LanguageForm";
+import ResumeDialog from "./components/ResumeDialog";
 import { Button } from "./components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, File, Copy, Trash2, MoreVertical } from "lucide-react";
+
+const PAGE_HEIGHT = 297; // mm
+const CONTENT_HEIGHT = 277; // mm (excluding margins)
 
 const App = () => {
 
-  const [currentResumeIndex, setCurrentResumeIndex] = useState(0);
-  const [currentResumeName, setCurrentResumeName] = useState<string>("");
-  const [savedResumes, setSavedResumes] = useState<string[]>([]);
+  const [resumes, setResumes] = useState<ResumeData[]>([]);
+  const [currentResumeId, setCurrentResumeId] = useState<string>('');
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+  // Function to create a new resume
+  const createNewResume = (name: string) => {
+    const newResume: ResumeData = {
+      id: Date.now().toString(),
+      name,
+      personalInformation: {
+        fullName: '',
+        title: '',
+        email: '',
+        phone: '',
+        location: '',
+        linkedin: '',
+        github: '',
+        website: '',
+        summary: ''
+      },
+      experiences: [],
+      education: [],
+      projects: [],
+      skills: [],
+      certifications: [],
+      languages: [],
+      updatedAt: new Date()
+    };
+
+    setResumes([...resumes, newResume]);
+    setCurrentResumeId(newResume.id);
+  };
+
+  // Function to duplicate current resume
+  const duplicateResume = () => {
+    const currentResume = resumes.find(r => r.id === currentResumeId);
+    if (!currentResume) return;
+
+    const newResume = {
+      ...currentResume,
+      id: Date.now().toString(),
+      name: `${currentResume.name} (Copy)`,
+      updatedAt: new Date()
+    };
+
+    setResumes([...resumes, newResume]);
+    setCurrentResumeId(newResume.id);
+  };
+
+  // Function to delete current resume
+  const deleteResume = (id: string) => {
+    setResumes(resumes.filter(r => r.id !== id));
+    if (currentResumeId === id) {
+      setCurrentResumeId(resumes[0]?.id || '');
+    }
+  };
+
+  // Function to save current resume
+  const saveResume = () => {
+    const updatedResumes = resumes.map(resume => {
+      if (resume.id === currentResumeId) {
+        return {
+          ...resume,
+          personalInfo,
+          experiences,
+          education,
+          projects,
+          skills,
+          certifications,
+          languages,
+          updatedAt: new Date()
+        };
+      }
+      return resume;
+    });
+    setResumes(updatedResumes);
+  };
+
+  // Load resume data when switching between resumes
+  React.useEffect(() => {
+    const currentResume = resumes.find(r => r.id === currentResumeId);
+    if (currentResume) {
+      setPersonalInfo(currentResume.personalInformation);
+      setExperiences(currentResume.experiences);
+      setEducation(currentResume.education);
+      setProjects(currentResume.projects);
+      setSkills(currentResume.skills);
+      setCertifications(currentResume.certifications);
+      setLanguages(currentResume.languages);
+    }
+  }, [currentResumeId]);
 
   const [personalInfo, setPersonalInfo] = React.useState<PersonalInformation>({
     fullName: "",
@@ -46,87 +148,35 @@ const App = () => {
   const [certifications, setCertifications] = useState<Certification[]>([]);
   const [languages, setLanguages] = useState<Language[]>([]);
   const [darkMode, setDarkMode] = useState(false);
+  const [contentScale, setContentScale] = React.useState(1);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
-  const [initialLoad, setInitialLoad] = useState(true);
 
+
+
+  // Auto-save when data changes
   React.useEffect(() => {
-    const resumeData = localStorage.getItem(`resumeData ${currentResumeIndex}`);
-    const resumeNames = localStorage.getItem("resumeNames");
-
-    if (resumeNames) {
-      setSavedResumes(JSON.parse(resumeNames));
+    if (currentResumeId) {
+      saveResume();
     }
+  }, [personalInfo, experiences, education, projects, skills, certifications, languages]);
 
-    const darkMode = localStorage.getItem("darkMode");
-    if (darkMode) {
-      setDarkMode(JSON.parse(darkMode));
-    }
-
-    if (resumeData) {
-      const parsedResumeData = JSON.parse(resumeData);
-      setCurrentResumeName(parsedResumeData.resumeName);
-      setPersonalInfo(parsedResumeData.personalInfo);
-      setExperiences(parsedResumeData.experiences);
-      setEducation(parsedResumeData.education);
-      setProjects(parsedResumeData.projects);
-      setSkills(parsedResumeData.skills);
-      setCertifications(parsedResumeData.certifications);
-      setLanguages(parsedResumeData.languages);
-      setInitialLoad(false);
-    }
-  }, [currentResumeIndex]);
-
+  // Calculate total pages
   React.useEffect(() => {
-    if (initialLoad) return;
-    localStorage.setItem(
-      `resumeData ${currentResumeIndex}`,
-      JSON.stringify({
-        currentResumeName,
-        personalInfo,
-        experiences,
-        education,
-        projects,
-        skills,
-        certifications,
-        languages,
-      })
-    );
-  }, [
-    personalInfo,
-    experiences,
-    education,
-    projects,
-    skills,
-    certifications,
-    languages,
-    initialLoad,
-    currentResumeName,
-    currentResumeIndex,
-  ]);
-
-  React.useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("darkMode", JSON.stringify(darkMode));
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.removeItem("darkMode");
+    if (contentRef.current) {
+      const contentHeight = contentRef.current.scrollHeight;
+      const pages = Math.ceil(contentHeight / (CONTENT_HEIGHT * contentScale));
+      setTotalPages(pages);
     }
-  }, [darkMode]);
+  }, [contentScale, personalInfo, experiences, education, projects, skills, certifications, languages]);
+
+
+
 
   return (
     <>
       <Card className="p-4 flex justify-between">
         <h1 className="text-2xl font-bold">Resume Builder</h1>
-        <Tabs defaultValue="0" className="">
-          <TabsList>
-            {savedResumes.map((resumeName, index) => (
-              <TabsTrigger onClick={() => setCurrentResumeIndex(index)} key={index} value={index.toString()}>
-                {resumeName}
-              </TabsTrigger>
-            ))} : <TabsTrigger onClick={() => setCurrentResumeIndex(0)} value="0">New Resume</TabsTrigger>
-          </TabsList>
-        </Tabs>
         <Button
           size={"sm"}
           onClick={() => {
@@ -139,6 +189,45 @@ const App = () => {
         </Button>
       </Card>
       <div className="flex flex-col lg:flex-row gap-8 p-6 bg-slate-200 dark:bg-slate-900">
+        {/* Resume Management Sidebar */}
+        <div className="w-full lg:w-64 space-y-4">
+          <ResumeDialog createNewResume={createNewResume}></ResumeDialog>
+
+          <div className="space-y-2">
+            {resumes.map((resume) => (
+              <div
+                key={resume.id}
+                className={`flex items-center justify-between p-2 rounded cursor-pointer ${currentResumeId === resume.id ? 'bg-gray-100 dark:bg-gray-600' : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
+                onClick={() => setCurrentResumeId(resume.id)}
+              >
+                <div className="flex items-center gap-2">
+                  <File className="w-4 h-4" />
+                  <span className="truncate">{resume.name}</span>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      <MoreVertical className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => duplicateResume()}>
+                      <Copy className="w-4 h-4 mr-2" /> Duplicate
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="text-red-600"
+                      onClick={() => deleteResume(resume.id)}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" /> Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="w-full lg:w-1/2 space-y-6">
           <PersonalInformationForm
             personalInfo={personalInfo}
@@ -168,7 +257,7 @@ const App = () => {
         </div>
 
         <PreviewSection
-          resumeName={currentResumeName}
+          resumeName={currentResumeId ? resumes.find(r => r.id === currentResumeId)?.name || '' : ''}
           personalInformation={personalInfo}
           experiences={experiences}
           education={education}
@@ -176,6 +265,12 @@ const App = () => {
           skills={skills}
           certifications={certifications}
           languages={languages}
+          contentRef={contentRef}
+          contentScale={contentScale}
+          setContentScale={setContentScale}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         ></PreviewSection>
       </div>
     </>
