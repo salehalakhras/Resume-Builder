@@ -23,6 +23,7 @@ export interface Education {
     id: number;
     school: string;
     degree: string;
+    grade?: string;
     startDate: string;
     endDate: string;
 }

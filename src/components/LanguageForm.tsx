@@ -3,43 +3,55 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Language } from "../types";
+import { Language, ResumeData } from "../types";
+import { useSelector, useDispatch } from "react-redux";
 
-const LanguageForm = ({
-  languages,
-  setLanguages,
-}: {
-  languages: Language[];
-  setLanguages: React.Dispatch<React.SetStateAction<Language[]>>;
-}) => {
+const LanguageForm = () => {
+
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
+  const resume = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
+  const dispatch = useDispatch();
+
   const addLanguage = () => {
-    setLanguages([
-      ...languages,
-      { id: Date.now(), name: "", proficiency: "Professional" },
-    ]);
-  };
-
-  const updateLanguage = (id: number, field: keyof Language, value: string) => {
-    setLanguages(
-      languages.map((lang) =>
-        lang.id === id ? { ...lang, [field]: value } : lang
-      )
-    );
+    const newLanguage: Language = {
+      id: Date.now(),
+      name: "",
+      proficiency: "Basic",
+    };
+    const updatedResume: ResumeData = {
+      ...resume,
+      languages: [...resume.languages, newLanguage],
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
   };
 
   const removeLanguage = (id: number) => {
-    setLanguages(languages.filter((lang) => lang.id !== id));
+    const updatedResume: ResumeData = {
+      ...resume,
+      languages: resume.languages.filter((lang: Language) => lang.id !== id),
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
+  };
+
+  const updateLanguage = (id: number, field: string, value: string) => {
+    const updatedResume: ResumeData = {
+      ...resume,
+      languages: resume.languages.map((lang: Language) =>
+        lang.id === id ? { ...lang, [field]: value } : lang
+      ),
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
   };
 
   return (
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Languages</h2>
-        <Button onClick={addLanguage} size="sm" className="font-bold">
+        <Button onClick={addLanguage} size="sm" className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
           <Plus className="w-4 h-4 mr-2" /> Add Language
         </Button>
       </div>
-      {languages.map((lang) => (
+      {resume.languages && resume.languages.map((lang: Language) => (
         <div key={lang.id} className="flex items-center gap-4 mb-4">
           <Input
             placeholder="Language"
@@ -52,7 +64,7 @@ const LanguageForm = ({
             onChange={(e) =>
               updateLanguage(lang.id, "proficiency", e.target.value)
             }
-            className="border rounded p-2"
+            className="border rounded p-2 dark:bg-gray-900 dark:text-slate-200"
           >
             <option value="Basic">Basic</option>
             <option value="Conversational">Conversational</option>

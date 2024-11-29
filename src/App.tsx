@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { Card } from "./components/ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Experience,
   Education,
   PersonalInformation,
@@ -29,6 +22,7 @@ import ResumeDialog from "./components/ResumeDialog";
 import { Button } from "./components/ui/button";
 import { Moon, Sun, File, Copy, Trash2, MoreVertical } from "lucide-react";
 import useInitializeApp from "./components/useInitializeApp";
+import ResumeManagement from "./components/ResumeManagement";
 
 const CONTENT_HEIGHT = 277; // mm (excluding margins)
 
@@ -197,62 +191,15 @@ const App = () => {
         </Button>
       </Card>
       <div className="flex flex-col lg:flex-row gap-8 p-6 bg-slate-200 dark:bg-slate-900">
-        {/* Resume Management Sidebar */}
-        <div className="w-full lg:w-64 space-y-4">
-          <ResumeDialog createNewResume={createNewResume}></ResumeDialog>
-
-          <div className="space-y-2">
-            {resumes.map((resume) => (
-              <div
-                key={resume.id}
-                className={`flex items-center justify-between p-2 rounded cursor-pointer ${currentResumeId === resume.id ? 'bg-gray-100 dark:bg-gray-600' : 'hover:bg-gray-100 dark:hover:bg-gray-800'
-                  }`}
-                onClick={() => setCurrentResumeId(resume.id)}
-              >
-                <div className="flex items-center gap-2">
-                  <File className="w-4 h-4" />
-                  <span className="truncate">{resume.name}</span>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => duplicateResume()}>
-                      <Copy className="w-4 h-4 mr-2" /> Duplicate
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-red-600"
-                      onClick={() => deleteResume(resume.id)}
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" /> Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            ))}
-          </div>
-        </div>
+      <ResumeManagement></ResumeManagement>
         <div className="w-full lg:w-1/2 space-y-6">
           <PersonalInformationForm></PersonalInformationForm>
           <ExperienceForm></ExperienceForm>
           <EducationForm></EducationForm>
-          <SkillsForm skills={skills} setSkills={setSkills}></SkillsForm>
-          <ProjectsForm
-            projects={projects}
-            setProjects={setProjects}
-          ></ProjectsForm>
-          <CertificationForm
-            certifications={certifications}
-            setCertifications={setCertifications}
-          ></CertificationForm>
-          <LanguageForm
-            languages={languages}
-            setLanguages={setLanguages}
-          ></LanguageForm>
+          <SkillsForm></SkillsForm>
+          <ProjectsForm></ProjectsForm>
+          <CertificationForm></CertificationForm>
+          <LanguageForm></LanguageForm>
         </div>
 
         <PreviewSection
@@ -272,6 +219,7 @@ const App = () => {
           setCurrentPage={setCurrentPage}
         ></PreviewSection>
       </div>
+      <div className="text-center text-lg p-2 bg-slate-200 dark:bg-slate-900">Created By Saleh Alakhras</div>
     </>
   );
 };

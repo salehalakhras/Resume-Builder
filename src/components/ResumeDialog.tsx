@@ -9,10 +9,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
 
 
-const ResumeDialog = ({ createNewResume } : { createNewResume: (name: string) => void }) => {
-    const [newResumeName, setNewResumeName] = React.useState('');
+const ResumeDialog = ({ addResume }: { addResume: (name: string) => void }) => {
+
+  const [newResumeName, setNewResumeName] = React.useState('');
     
     return (
       <Dialog>
@@ -34,7 +36,7 @@ const ResumeDialog = ({ createNewResume } : { createNewResume: (name: string) =>
             <Button
               onClick={() => {
                 if (newResumeName) {
-                  createNewResume(newResumeName);
+                  addResume(newResumeName);
                   setNewResumeName('');
                 }
               }}

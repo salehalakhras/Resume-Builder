@@ -48,11 +48,11 @@ const EducationForm = () => {
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Education</h2>
-        <Button onClick={addEducation} size="sm" className="font-bold">
+        <Button onClick={addEducation} size="sm" className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
           <Plus className="w-4 h-4 mr-2" /> Add Education
         </Button>
       </div>
-      {resume.education.map((edu: Education) => (
+      {resume.education && resume.education.map((edu: Education) => (
         <div key={edu.id} className="space-y-4 mb-6 p-4 border rounded">
           <div className="flex justify-end">
             <Button
@@ -73,32 +73,35 @@ const EducationForm = () => {
             value={edu.degree}
             onChange={(e) => updateEducation(edu.id, "degree", e.target.value)}
           />
+          <Input
+            placeholder="Grade (optional)"
+            value={edu.grade}
+            onChange={(e) => updateEducation(edu.id, "grade", e.target.value)}
+          />
           <div className="flex gap-4">
 
-          <Input
-            placeholder="Start Year"
-            type="date"
-            value={edu.startDate}
-            onChange={(e) =>
-            {
-              const selectedDate = new Date(e.target.value);
-              const formattedDate = selectedDate.getFullYear().toString();
-              updateEducation(edu.id, "startDate", formattedDate);
-            }
-            }
-          />
-          <Input
-            placeholder="End Year"
-            type="date"
-            value={edu.endDate}
-            onChange={(e) =>
-            {
-              const selectedDate = new Date(e.target.value);
-              const formattedDate = selectedDate.getFullYear().toString();
-              updateEducation(edu.id, "endDate", formattedDate);
-            }
-            }
-          />
+            <Input
+              placeholder="Start Year"
+              type="date"
+              value={edu.startDate}
+              onChange={(e) => {
+                const selectedDate = new Date(e.target.value);
+                const formattedDate = selectedDate.getFullYear().toString();
+                updateEducation(edu.id, "startDate", formattedDate);
+              }
+              }
+            />
+            <Input
+              placeholder="End Year"
+              type="date"
+              value={edu.endDate}
+              onChange={(e) => {
+                const selectedDate = new Date(e.target.value);
+                const formattedDate = selectedDate.getFullYear().toString();
+                updateEducation(edu.id, "endDate", formattedDate);
+              }
+              }
+            />
           </div>
         </div>
       ))}

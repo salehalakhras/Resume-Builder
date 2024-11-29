@@ -3,7 +3,7 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface resumeState {
     darkMode: boolean;
-    currentResume?: number;
+    currentResume: number;
     resumes: ResumeData[];
 }
 

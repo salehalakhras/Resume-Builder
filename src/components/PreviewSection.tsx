@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Download, Maximize2, ZoomOut, ZoomIn, ChevronLeft, ChevronRight, Linkedin, Github, Globe } from "lucide-react";
-import { Education, Experience, ResumeData } from "../types";
+import { Certification, Education, Experience, Language, Project, ResumeData, Skill } from "../types";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
 import { useSelector } from "react-redux";
@@ -162,12 +162,13 @@ const PreviewSection = ({
             <div
               id="resume-preview"
               ref={contentRef}
-              className="h-full w-full p-6 dark:text-black font-merri"
+              className="h-full w-full p-8 dark:text-black font-merri"
               style={{
                 transformOrigin: 'top center',
                 top: `${-(currentPage - 1) * (PAGE_HEIGHT / contentScale)}mm`,
               }}
             >
+
               <div className="text-center">
                 <h1 className="text-3xl font-semibold">
                   {resume.personalInformation.fullName || "Your Name"}
@@ -232,8 +233,8 @@ const PreviewSection = ({
 
               {resume.personalInformation.summary && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2 mt-2">
-                    Professional Summary
+                  <h2 className="text-xl uppercase font-bold border-b border-black  mb-2 mt-2">
+                    Summary
                   </h2>
                   <p className="text-wrap">{resume.personalInformation.summary}</p>
                 </div>
@@ -241,7 +242,7 @@ const PreviewSection = ({
 
               {resume.experiences.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">Experience</h2>
+                  <h2 className="text-xl uppercase font-bold border-b border-black mb-2">Experience</h2>
                   {resume.experiences.map((exp: Experience) => (
                     <div key={exp.id} className="mb-4">
                       <div className="flex justify-between">
@@ -259,7 +260,7 @@ const PreviewSection = ({
 
               {resume.education.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">Education</h2>
+                  <h2 className="text-xl uppercase font-bold border-b border-black mb-2">Education</h2>
                   {resume.education.map((edu: Education) => (
                     <div key={edu.id} className="mb-4">
                       <div className="flex justify-between">
@@ -272,10 +273,10 @@ const PreviewSection = ({
                 </div>
               )}
 
-              {projects.length > 0 && (
+              {resume.projects.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">Projects</h2>
-                  {projects.map((proj) => (
+                  <h2 className="text-xl uppercase font-bold border-b border-black mb-2">Projects</h2>
+                  {resume.projects.map((proj: Project) => (
                     <div key={proj.id} className="mb-4">
                       <div className="flex gap-4">
                         <strong>{proj.name}</strong>
@@ -299,11 +300,11 @@ const PreviewSection = ({
                 </div>
               )}
 
-              {skills.length > 0 && (
+              {resume.skills.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">Skills</h2>
+                  <h2 className="text-xl uppercase font-bold border-b border-black mb-2">Skills</h2>
                   <ul className="grid grid-cols-2">
-                    {skills.map((skill) => (
+                    {resume.skills.map((skill: Skill) => (
                       <li key={skill.id} className="text-sm">
                         {skill.name}
                       </li>
@@ -312,12 +313,12 @@ const PreviewSection = ({
                 </div>
               )}
 
-              {certifications.length > 0 && (
+              {resume.certifications.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">
+                  <h2 className="text-xl uppercase font-bold border-b border-black mb-2">
                     Certifications
                   </h2>
-                  {certifications.map((cert) => (
+                  {resume.certifications.map((cert: Certification) => (
                     <div key={cert.id} className="mb-4">
                       <div className="flex justify-between">
                         <strong>{cert.name}</strong>
@@ -329,11 +330,11 @@ const PreviewSection = ({
                 </div>
               )}
 
-              {languages.length > 0 && (
+              {resume.languages.length > 0 && (
                 <div>
-                  <h2 className="text-xl font-bold border-b mb-2">Languages</h2>
+                  <h2 className="text-xl uppercase font-bold border-b border-black mb-2">Languages</h2>
                   <ul className="grid grid-cols-2">
-                    {languages.map((lang) => (
+                    {resume.languages.map((lang: Language) => (
                       <li key={lang.id} className="text-sm">
                         {lang.name} - {lang.proficiency}
                       </li>

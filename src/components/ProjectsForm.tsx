@@ -4,42 +4,49 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Project } from "../types";
+import { Project, ResumeData } from "../types";
+import { useSelector, useDispatch } from "react-redux";
 
-const ProjectsForm = ({
-  projects,
-  setProjects,
-}: {
-  projects: Project[];
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
-}) => {
+const ProjectsForm = () => {
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
+  const resume = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
+  const dispatch = useDispatch();
 
-    const addProject = () => {
-        setProjects([
-          ...projects,
-          {
-            id: Date.now(),
-            name: "",
-            description: "",
-            technologies: "",
-            link: "",
-          },
-        ]);
-      };
-    
-      const updateProject = (
-        id: number,
-        field: keyof Project,
-        value: string
-      ) => {
-        setProjects(
-          projects.map((project) => (project.id === id ? { ...project, [field]: value } : project))
-        );
-      };
-    
-      const removeProject = (id: number) => {
-        setProjects(projects.filter((project) => project.id !== id));
-      };
+  const addProject = () => {
+    const newProject: Project = {
+      id: Date.now(),
+      name: "",
+      description: "",
+      technologies: "",
+      link: "",
+    };
+    const updatedResume: ResumeData = {
+      ...resume,
+      projects: [...resume.projects, newProject],
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
+  };
+
+  const removeProject = (projectId: number) => {    
+    const updatedResume: ResumeData = {
+      ...resume,
+      projects: resume.projects.filter((project: Project) => project.id !== projectId),
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
+  };
+
+  const updateProject = (projectId: number, field: keyof Project, value: string) => {
+    const updatedResume: ResumeData = {
+      ...resume,
+      projects: resume.projects.map((project: Project) => {
+        if (project.id === projectId) {
+          return { ...project, [field]: value };
+        }
+        return project;
+      }),
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
+  };
 
 
 
@@ -50,12 +57,12 @@ const ProjectsForm = ({
         <Button
           onClick={addProject}
           size="sm"
-          className="font-bold"
+          className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300"
         >
           <Plus className="w-4 h-4 mr-2" /> Add Project
         </Button>
       </div>
-      {projects.map((project) => (
+      {resume.projects && resume.projects.map((project: Project) => (
         <div key={project.id} className="space-y-4 mb-6 p-4 border rounded">
           <div className="flex justify-end">
             <Button

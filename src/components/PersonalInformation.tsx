@@ -4,12 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PersonalInformation, ResumeData } from "@/types";
 import { useDispatch, useSelector } from "react-redux";
-import { resumeState } from "@/store/resumeSlice";
 
 const PersonalInformationForm = () => {
-  const currentResume = useSelector((state: resumeState) => state.currentResume);
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
   const resume: ResumeData = useSelector((state: any) => state.resumes.resumes[currentResume?? 0]);
   const dispatch = useDispatch();
+
 
   const handlePersonalInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -96,6 +96,7 @@ const PersonalInformationForm = () => {
           className="h-32"
         />
       </div>
+      <div>{currentResume}</div>
     </Card>
   );
 };

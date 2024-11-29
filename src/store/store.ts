@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import resumeSlice from './resumeSlice';
 import { Middleware } from '@reduxjs/toolkit';
 import { ResumeData } from '../types';
-import { loadResumes } from '../store/resumeSlice';
+import { loadResumes, changeResume } from '../store/resumeSlice';
 
 const localStorageMiddleware: Middleware = (store) => (next) => (action: any) => {
   const result = next(action);
@@ -13,6 +13,10 @@ const localStorageMiddleware: Middleware = (store) => (next) => (action: any) =>
     if (storedResumes) {
       const parsedResumes: ResumeData[] = JSON.parse(storedResumes);
       store.dispatch(loadResumes(parsedResumes));
+    }
+    const currentResume = localStorage.getItem('currentResume');
+    if (currentResume) {
+      store.dispatch(changeResume(JSON.parse(currentResume)));
     }
   }
   return result;

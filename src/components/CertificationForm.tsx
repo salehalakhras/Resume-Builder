@@ -3,23 +3,46 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
-import { Certification } from '../types';
+import { Certification, ResumeData } from '../types';
+import { useSelector, useDispatch } from 'react-redux';
 
-const CertificationForm = ({ certifications, setCertifications } : { certifications: Certification[], setCertifications: React.Dispatch<React.SetStateAction<Certification[]>> }) => {
+const CertificationForm = () => {
 
-    const addCertification = () => {
-        setCertifications([...certifications, { id: Date.now(), name: '', issuer: '', date: '', expiryDate: '' }]);
-      };
-    
-      const updateCertification = (id: number, field: keyof Certification, value: string) => {
-        setCertifications(
-          certifications.map((cert) => (cert.id === id ? { ...cert, [field]: value } : cert))
-        );
-      };
-    
-      const removeCertification = (id: number) => {
-        setCertifications(certifications.filter((cert) => cert.id !== id));
-      }
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
+  const resume = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
+  const dispatch = useDispatch();
+
+  const addCertification = () => {
+    const newCert: Certification = {
+      id: Date.now(),
+      name: '',
+      issuer: '',
+      date: '',
+    };
+    const updatedResume: ResumeData = {
+      ...resume,
+      certifications: [...resume.certifications, newCert],
+    };
+    dispatch({ type: 'resumes/updateResume', payload: updatedResume });
+  };
+
+  const removeCertification = (id: number) => {
+    const updatedResume: ResumeData = {
+      ...resume,
+      certifications: resume.certifications.filter((cert: Certification) => cert.id !== id),
+    };
+    dispatch({ type: 'resumes/updateResume', payload: updatedResume });
+  };
+
+  const updateCertification = (id: number, field: string, value: string) => {
+    const updatedResume: ResumeData = {
+      ...resume,
+      certifications: resume.certifications.map((cert: Certification) =>
+        cert.id === id ? { ...cert, [field]: value } : cert
+      ),
+    };
+    dispatch({ type: 'resumes/updateResume', payload: updatedResume });
+  };
 
   return (
     <Card className="p-6">
@@ -28,12 +51,12 @@ const CertificationForm = ({ certifications, setCertifications } : { certificati
       <Button
         onClick={addCertification}
         size="sm"
-        className="font-bold"
+        className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300"
       >
         <Plus className="w-4 h-4 mr-2" /> Add Certification
       </Button>
     </div>
-    {certifications.map((cert) => (
+    {resume.certifications && resume.certifications.map((cert: Certification) => (
       <div key={cert.id} className="space-y-4 mb-6 p-4 border rounded">
         <div className="flex justify-end">
           <Button

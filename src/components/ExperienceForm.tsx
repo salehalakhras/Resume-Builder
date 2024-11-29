@@ -8,7 +8,7 @@ import { resumeState } from "@/store/resumeSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ExperienceForm = () => {
-  const currentResume = useSelector((state: resumeState) => state.currentResume);
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
   const resume: ResumeData = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
   const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ const ExperienceForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Experience</h2>
         <Button onClick={addExperience} size="sm"
-          className="font-bold">
+          className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
           <Plus className="w-4 h-4 mr-2" /> Add Experience
         </Button>
       </div>
