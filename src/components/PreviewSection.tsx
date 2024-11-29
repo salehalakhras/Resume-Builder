@@ -79,20 +79,19 @@ const PreviewSection = ({
 
     const opt = {
       filename: `${resumeName}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: contentScale },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", orientation: "portrait" },
     };
 
     html2pdf().set(opt).from(element).save();
   };
 
   return (
-    <div className="w-full lg:w-1/2 flex flex-col gap-4">
+    <div className="w-full lg:w-1/2 flex flex-col gap-4" >
       <Card className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold">Preview</h2>
-          <span className="text-lg font-bold text-gray-700 dark:text-gray-400">Resume: {resumeName}</span>
           <div className="flex items-center gap-4">
             <Button onClick={autoFitContent} className="font-bold">
               <Maximize2 className="w-4 h-4 mr-2" />
@@ -128,13 +127,13 @@ const PreviewSection = ({
             </Button>
           </div>
           {/* Preview Scale Controls */}
-          <div className="flex justify-center gap-4">
+          {/* <div className="flex justify-center gap-4">
             <ZoomOut className="w-4 h-4" />
             <Slider
               value={[scale]}
               onValueChange={(value) => setScale(value[0])}
               min={0.5}
-              max={1}
+              max={1.5}
               step={0.1}
               className="w-48"
             />
@@ -142,23 +141,21 @@ const PreviewSection = ({
             <span className="text-sm text-gray-500">
               {Math.round(scale * 100)}%
             </span>
-          </div>
+          </div> */}
         </div>
 
 
         {/* A4 Preview Container */}
-        <div className="relative w-full flex justify-center">
+        <div className="relative flex justify-center">
           <div
             style={{
-              width: '210mm',
-              height: '297mm',
-              transform: `scale(${scale})`,
+              minWidth: '210mm',
               transformOrigin: 'top center',
               backgroundColor: 'white',
               boxShadow: '0 0 10px rgba(0,0,0,0.1)',
               margin: '0 auto',
             }}
-            className="relative overflow-hidden"
+            className="relative overflow-hidden scale-[0.5] md:scale-[0.8] lg:scale-[0.8]"
             ref={previewRef}
           >
             {/* Content Container */}
@@ -167,14 +164,13 @@ const PreviewSection = ({
               ref={contentRef}
               className="h-full w-full p-6 dark:text-black font-merri"
               style={{
-                transform: `scale(${contentScale})`,
                 transformOrigin: 'top center',
                 top: `${-(currentPage - 1) * (PAGE_HEIGHT / contentScale)}mm`,
               }}
             >
               <div className="text-center">
                 <h1 className="text-3xl font-semibold">
-                  {resume.personalInformation.name || "Your Name"}
+                  {resume.personalInformation.fullName || "Your Name"}
                 </h1>
                 <p className="text-gray-800">{resume.personalInformation.title}</p>
                 <p className="text-gray-600 text-sm">

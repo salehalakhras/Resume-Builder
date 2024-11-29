@@ -36,6 +36,13 @@ const App = () => {
 
   useInitializeApp();
 
+  React.useEffect(() => {
+    window.addEventListener('resize', () => {
+      const scale = window.innerWidth / 1000;
+      setContentScale(scale > 1? 1 : scale);
+    })
+  },[])
+
   const [resumes, setResumes] = useState<ResumeData[]>([]);
   const [currentResumeId, setCurrentResumeId] = useState<string>('');
   const [totalPages, setTotalPages] = useState(1);
@@ -168,7 +175,8 @@ const App = () => {
       const pages = Math.ceil(contentHeight / (CONTENT_HEIGHT * contentScale));
       setTotalPages(pages);
     }
-  }, [contentScale, personalInfo, experiences, education, projects, skills, certifications, languages]);
+  }, [contentScale]);
+
 
 
 
