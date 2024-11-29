@@ -2,24 +2,35 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PersonalInformation } from "@/types";
+import { PersonalInformation, ResumeData } from "@/types";
+import { useDispatch, useSelector } from "react-redux";
+import { resumeState } from "@/store/resumeSlice";
 
-const PersonalInformationForm = ({
-  personalInfo,
-  setPersonalInfo,
-}: {
-  personalInfo: PersonalInformation;
-  setPersonalInfo: React.Dispatch<React.SetStateAction<PersonalInformation>>;
-}) => {
+const PersonalInformationForm = () => {
+  const currentResume = useSelector((state: resumeState) => state.currentResume);
+  const resume: ResumeData = useSelector((state: any) => state.resumes.resumes[currentResume?? 0]);
+  const dispatch = useDispatch();
+
   const handlePersonalInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setPersonalInfo({
-      ...personalInfo,
-      [e.target.name]: e.target.value,
-    });
-  };
+    const { name, value } = e.target;
 
+    const updatedPersonalInfo: PersonalInformation = {
+      ...resume.personalInformation,
+      [name]: value,
+    }
+
+    const updatedResume: ResumeData = {
+      ...resume,
+      personalInformation: updatedPersonalInfo,
+    }
+
+    dispatch({
+      type: "resumes/updateResume",
+      payload: updatedResume,
+    });
+  }
   return (
     <Card className="p-6">
       <h2 className="text-2xl font-bold mb-4">Personal Information</h2>
@@ -27,13 +38,13 @@ const PersonalInformationForm = ({
         <Input
           placeholder="Full Name"
           name="fullName"
-          value={personalInfo.fullName}
+          value={resume.personalInformation.fullName}
           onChange={handlePersonalInfoChange}
         />
         <Input
           placeholder="Professional Title"
           name="title"
-          value={personalInfo.title}
+          value={resume.personalInformation.title}
           onChange={handlePersonalInfoChange}
         />
         <div className="grid grid-cols-2 gap-4">
@@ -41,46 +52,46 @@ const PersonalInformationForm = ({
             placeholder="Email"
             name="email"
             type="email"
-            value={personalInfo.email}
+            value={resume.personalInformation.email}
             onChange={handlePersonalInfoChange}
           />
           <Input
             placeholder="Phone"
             name="phone"
-            value={personalInfo.phone}
+            value={resume.personalInformation.phone}
             onChange={handlePersonalInfoChange}
           />
         </div>
         <Input
           placeholder="Location"
           name="location"
-          value={personalInfo.location}
+          value={resume.personalInformation.location}
           onChange={handlePersonalInfoChange}
         />
         <div className="grid grid-cols-2 gap-4">
           <Input
             placeholder="LinkedIn URL"
             name="linkedin"
-            value={personalInfo.linkedin}
+            value={resume.personalInformation.linkedin}
             onChange={handlePersonalInfoChange}
           />
           <Input
             placeholder="GitHub Username"
             name="github"
-            value={personalInfo.github}
+            value={resume.personalInformation.github}
             onChange={handlePersonalInfoChange}
           />
         </div>
         <Input
           placeholder="Personal Website"
           name="website"
-          value={personalInfo.website}
+          value={resume.personalInformation.website}
           onChange={handlePersonalInfoChange}
         />
         <Textarea
           placeholder="Professional Summary"
           name="summary"
-          value={personalInfo.summary}
+          value={resume.personalInformation.summary}
           onChange={handlePersonalInfoChange}
           className="h-32"
         />

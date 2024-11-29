@@ -1,52 +1,73 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Experience } from "../types";
+import { Experience, ResumeData } from "../types";
+import { resumeState } from "@/store/resumeSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const ExperienceForm = ({ experiences, setExperiences } : { experiences: Experience[], setExperiences: React.Dispatch<React.SetStateAction<Experience[]>> }) => {
+const ExperienceForm = () => {
+  const currentResume = useSelector((state: resumeState) => state.currentResume);
+  const resume: ResumeData = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
+  const dispatch = useDispatch();
+
   const addExperience = () => {
-    setExperiences([
-      ...experiences,
-      {
-        id: Date.now(),
-        title: "",
-        company: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ]);
-  };
+    const newExperience: Experience = {
+      id: Date.now(),
+      title: "",
+      company: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    }
 
-  const updateExperience = (
-    id: number,
-    field: keyof Experience,
-    value: string
-  ) => {
-    setExperiences(
-      experiences.map((exp) =>
-        exp.id === id ? { ...exp, [field]: value } : exp
-      )
-    );
+    const updatedResume: ResumeData = {
+      ...resume,
+      experiences: [...resume.experiences, newExperience],
+    }
+
+    dispatch({
+      type: "resumes/updateResume",
+      payload: updatedResume,
+    });
   };
 
   const removeExperience = (id: number) => {
-    setExperiences(experiences.filter((exp) => exp.id !== id));
+    const updatedResume: ResumeData = {
+      ...resume,
+      experiences: resume.experiences.filter((exp) => exp.id !== id),
+    }
+
+    dispatch({
+      type: "resumes/updateResume",
+      payload: updatedResume,
+    });
   };
+
+  const updateExperience = (id: number, field: keyof Experience, value: string) => {
+    const updatedResume: ResumeData = {
+      ...resume,
+      experiences: resume.experiences.map((exp) => (exp.id === id ? { ...exp, [field]: value } : exp)),
+    }
+
+    dispatch({
+      type: "resumes/updateResume",
+      payload: updatedResume,
+    });
+  };
+
 
   return (
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Experience</h2>
         <Button onClick={addExperience} size="sm"
-        className="font-bold">
+          className="font-bold">
           <Plus className="w-4 h-4 mr-2" /> Add Experience
         </Button>
       </div>
-      {experiences.map((exp) => (
+      {resume.experiences.map((exp) => (
         <div key={exp.id} className="space-y-4 mb-6 p-4 border rounded">
           <div className="flex justify-end">
             <Button
@@ -73,17 +94,27 @@ const ExperienceForm = ({ experiences, setExperiences } : { experiences: Experie
             <Input
               placeholder="Start Date"
               type="date"
-              value={exp.startDate}
-              onChange={(e) =>
-                updateExperience(exp.id, "startDate", e.target.value)
+              value={exp.startDate + "-01"}
+              onChange={(e) => {
+                const selectedDate = new Date(e.target.value);
+                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2,
+                  '0')}`;
+                updateExperience(exp.id, "startDate", formattedDate)
+              }
+
               }
             />
             <Input
               placeholder="End Date"
               type="date"
-              value={exp.endDate}
+              value={exp.endDate + "-01"}
               onChange={(e) =>
-                updateExperience(exp.id, "endDate", e.target.value)
+                {
+                  const selectedDate = new Date(e.target.value);
+                  const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2,
+                    '0')}`;
+                  updateExperience(exp.id, "endDate", formattedDate)
+                }
               }
             />
           </div>

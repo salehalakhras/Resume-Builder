@@ -1,42 +1,48 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Education } from "../types";
+import { Education, ResumeData } from "../types";
+import { useDispatch, useSelector } from "react-redux";
 
-const EducationForm = ({
-  education,
-  setEducation,
-}: {
-  education: Education[];
-  setEducation: React.Dispatch<React.SetStateAction<Education[]>>;
-}) => {
+const EducationForm = () => {
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
+  const resume = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
+  const dispatch = useDispatch();
+
   const addEducation = () => {
-    setEducation([
-      ...education,
-      {
-        id: Date.now(),
-        school: "",
-        degree: "",
-        graduationDate: "",
-      },
-    ]);
+    const newEducation: Education = {
+      id: Date.now(),
+      school: "",
+      degree: "",
+      startDate: "",
+      endDate: "",
+    };
+    const updatedResume: ResumeData = {
+      ...resume,
+      education: [...resume.education, newEducation],
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
   };
 
-  const updateEducation = (
-    id: number,
-    field: keyof Education,
-    value: string
-  ) => {
-    setEducation(
-      education.map((edu) => (edu.id === id ? { ...edu, [field]: value } : edu))
-    );
-  };
+  const updateEducation = (id: number, field: keyof Education, value: string) => {
+    const updatedResume: ResumeData = {
+      ...resume,
+      education: resume.education.map((edu: Education) =>
+        edu.id === id ? { ...edu, [field]: value } : edu
+      ),
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
+  }
 
   const removeEducation = (id: number) => {
-    setEducation(education.filter((edu) => edu.id !== id));
+    const updatedResume: ResumeData = {
+      ...resume,
+      education: resume.education.filter((edu: Education) => edu.id !== id),
+    };
+    dispatch({ type: "resumes/updateResume", payload: updatedResume });
   };
+
 
   return (
     <Card className="p-6">
@@ -46,7 +52,7 @@ const EducationForm = ({
           <Plus className="w-4 h-4 mr-2" /> Add Education
         </Button>
       </div>
-      {education.map((edu) => (
+      {resume.education.map((edu: Education) => (
         <div key={edu.id} className="space-y-4 mb-6 p-4 border rounded">
           <div className="flex justify-end">
             <Button
@@ -67,14 +73,33 @@ const EducationForm = ({
             value={edu.degree}
             onChange={(e) => updateEducation(edu.id, "degree", e.target.value)}
           />
+          <div className="flex gap-4">
+
           <Input
-            placeholder="Graduation Date"
+            placeholder="Start Year"
             type="date"
-            value={edu.graduationDate}
+            value={edu.startDate}
             onChange={(e) =>
-              updateEducation(edu.id, "graduationDate", e.target.value)
+            {
+              const selectedDate = new Date(e.target.value);
+              const formattedDate = selectedDate.getFullYear().toString();
+              updateEducation(edu.id, "startDate", formattedDate);
+            }
             }
           />
+          <Input
+            placeholder="End Year"
+            type="date"
+            value={edu.endDate}
+            onChange={(e) =>
+            {
+              const selectedDate = new Date(e.target.value);
+              const formattedDate = selectedDate.getFullYear().toString();
+              updateEducation(edu.id, "endDate", formattedDate);
+            }
+            }
+          />
+          </div>
         </div>
       ))}
     </Card>
