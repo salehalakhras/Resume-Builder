@@ -23,7 +23,8 @@ export interface Education {
     id: number;
     school: string;
     degree: string;
-    graduationDate: string;
+    startDate: string;
+    endDate: string;
 }
 
 export interface Project {
@@ -64,5 +65,4 @@ export interface ResumeData {
     skills: Skill[];
     certifications: Certification[];
     languages: Language[];
-    updatedAt: Date;
 }

@@ -29,11 +29,14 @@ import LanguageForm from "./components/LanguageForm";
 import ResumeDialog from "./components/ResumeDialog";
 import { Button } from "./components/ui/button";
 import { Moon, Sun, File, Copy, Trash2, MoreVertical } from "lucide-react";
+import useInitializeApp from "./components/useInitializeApp";
 
 const PAGE_HEIGHT = 297; // mm
 const CONTENT_HEIGHT = 277; // mm (excluding margins)
 
 const App = () => {
+
+  useInitializeApp();
 
   const [resumes, setResumes] = useState<ResumeData[]>([]);
   const [currentResumeId, setCurrentResumeId] = useState<string>('');
@@ -63,7 +66,6 @@ const App = () => {
       skills: [],
       certifications: [],
       languages: [],
-      updatedAt: new Date()
     };
 
     setResumes([...resumes, newResume]);
@@ -229,18 +231,9 @@ const App = () => {
           </div>
         </div>
         <div className="w-full lg:w-1/2 space-y-6">
-          <PersonalInformationForm
-            personalInfo={personalInfo}
-            setPersonalInfo={setPersonalInfo}
-          ></PersonalInformationForm>
-          <ExperienceForm
-            experiences={experiences}
-            setExperiences={setExperiences}
-          ></ExperienceForm>
-          <EducationForm
-            education={education}
-            setEducation={setEducation}
-          ></EducationForm>
+          <PersonalInformationForm></PersonalInformationForm>
+          <ExperienceForm></ExperienceForm>
+          <EducationForm></EducationForm>
           <SkillsForm skills={skills} setSkills={setSkills}></SkillsForm>
           <ProjectsForm
             projects={projects}

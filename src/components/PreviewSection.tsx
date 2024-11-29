@@ -3,9 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Download, Maximize2, ZoomOut, ZoomIn, ChevronLeft, ChevronRight, Linkedin, Github, Globe } from "lucide-react";
-import { ResumeData } from "../types";
+import { Education, Experience, ResumeData } from "../types";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
+import { useSelector } from "react-redux";
 
 const PAGE_HEIGHT = 297 //mm
 
@@ -40,6 +41,9 @@ const PreviewSection = ({
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalPages: number;
 }) => {
+
+  const currentResume = useSelector((state: any) => state.resumes.currentResume);
+  const resume = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
 
   const [scale, setScale] = React.useState(1);
   const previewRef = React.useRef<HTMLDivElement>(null);
@@ -173,59 +177,59 @@ const PreviewSection = ({
             >
               <div className="text-center">
                 <h1 className="text-3xl font-semibold">
-                  {personalInformation.fullName || "Your Name"}
+                  {resume.personalInformation.name || "Your Name"}
                 </h1>
-                <p className="text-gray-800">{personalInformation.title}</p>
+                <p className="text-gray-800">{resume.personalInformation.title}</p>
                 <p className="text-gray-600 text-sm">
                   {[
-                    personalInformation.email,
-                    personalInformation.phone,
-                    personalInformation.location,
+                    resume.personalInformation.email,
+                    resume.personalInformation.phone,
+                    resume.personalInformation.location,
                   ]
                     .filter(Boolean)
                     .join(" • ")}
                 </p>
                 <p className="text-gray-600 text-sm italic gap-2 flex items-center justify-center">
-                  {personalInformation.github && (
+                  {resume.personalInformation.github && (
                     <>
                       <Github className="w-4 h-4 inline-block"></Github>
                       <a
-                        href={"https://github.com/" + personalInformation.github}
+                        href={"https://github.com/" + resume.personalInformation.github}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-500 hover:underline"
                       >
-                        {personalInformation.github}
+                        {resume.personalInformation.github}
                       </a>
                     </>
 
                   )}
 
-                  {personalInformation.linkedin && (
+                  {resume.personalInformation.linkedin && (
                     <>
                       <Linkedin className="w-4 h-4 inline-block"></Linkedin>
                       <a
-                        href={personalInformation.linkedin}
+                        href={resume.personalInformation.linkedin}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-500 hover:underline"
                       >
-                        {personalInformation.linkedin}
+                        {resume.personalInformation.linkedin}
                       </a>
 
                     </>
 
                   )}
-                  {personalInformation.website && (
+                  {resume.personalInformation.website && (
                     <>
                       <Globe className="w-4 h-4 inline-block"></Globe>
                       <a
-                        href={personalInformation.website}
+                        href={resume.personalInformation.website}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-500 hover:underline"
                       >
-                        {personalInformation.website}
+                        {resume.personalInformation.website}
                       </a>
                     </>
 
@@ -233,19 +237,19 @@ const PreviewSection = ({
                 </p>
               </div>
 
-              {personalInformation.summary && (
+              {resume.personalInformation.summary && (
                 <div>
                   <h2 className="text-xl font-bold border-b mb-2 mt-2">
                     Professional Summary
                   </h2>
-                  <p className="text-wrap">{personalInformation.summary}</p>
+                  <p className="text-wrap">{resume.personalInformation.summary}</p>
                 </div>
               )}
 
-              {experiences.length > 0 && (
+              {resume.experiences.length > 0 && (
                 <div>
                   <h2 className="text-xl font-bold border-b mb-2">Experience</h2>
-                  {experiences.map((exp) => (
+                  {resume.experiences.map((exp: Experience) => (
                     <div key={exp.id} className="mb-4">
                       <div className="flex justify-between">
                         <strong>{exp.title}</strong>
@@ -260,16 +264,16 @@ const PreviewSection = ({
                 </div>
               )}
 
-              {education.length > 0 && (
+              {resume.education.length > 0 && (
                 <div>
                   <h2 className="text-xl font-bold border-b mb-2">Education</h2>
-                  {education.map((edu) => (
+                  {resume.education.map((edu: Education) => (
                     <div key={edu.id} className="mb-4">
                       <div className="flex justify-between">
                         <strong>{edu.degree}</strong>
-                        <span>{edu.school}</span>
+                        <div className="text-gray-600">{edu.startDate} - {edu.endDate}</div>
                       </div>
-                      <div className="text-gray-600">{edu.graduationDate}</div>
+                      <span>{edu.school}</span>
                     </div>
                   ))}
                 </div>
