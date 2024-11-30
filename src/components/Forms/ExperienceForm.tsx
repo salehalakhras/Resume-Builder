@@ -3,8 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Experience, ResumeData } from "../types";
-import { resumeState } from "@/store/resumeSlice";
+import { Experience, ResumeData } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 
 const ExperienceForm = () => {
@@ -108,13 +107,12 @@ const ExperienceForm = () => {
               placeholder="End Date"
               type="date"
               value={exp.endDate + "-01"}
-              onChange={(e) =>
-                {
-                  const selectedDate = new Date(e.target.value);
-                  const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2,
-                    '0')}`;
-                  updateExperience(exp.id, "endDate", formattedDate)
-                }
+              onChange={(e) => {
+                const selectedDate = new Date(e.target.value);
+                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2,
+                  '0')}`;
+                updateExperience(exp.id, "endDate", formattedDate)
+              }
               }
             />
           </div>

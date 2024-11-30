@@ -1,9 +1,8 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Language, ResumeData } from "../types";
+import { Language, ResumeData } from "../../types";
 import { useSelector, useDispatch } from "react-redux";
 
 const LanguageForm = () => {

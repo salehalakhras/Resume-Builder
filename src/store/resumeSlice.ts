@@ -57,9 +57,6 @@ export const resumeSlice = createSlice({
         loadResumes: (state, action: PayloadAction<ResumeData[]>) => {
             state.resumes = action.payload;
         },
-        toggleDarkMode: (state) => {
-            state.darkMode = !state.darkMode;
-        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -67,6 +64,7 @@ export const resumeSlice = createSlice({
             (state) => {
                 localStorage.setItem('resumes', JSON.stringify(state.resumes));
                 localStorage.setItem('currentResume', JSON.stringify(state.currentResume));
+                localStorage.setItem('darkMode', JSON.stringify(state.darkMode));
             }
         );
     },

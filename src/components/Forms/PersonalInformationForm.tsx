@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const PersonalInformationForm = () => {
   const currentResume = useSelector((state: any) => state.resumes.currentResume);
-  const resume: ResumeData = useSelector((state: any) => state.resumes.resumes[currentResume?? 0]);
+  const resume: ResumeData = useSelector((state: any) => state.resumes.resumes[currentResume ?? 0]);
   const dispatch = useDispatch();
 
 
@@ -96,7 +96,6 @@ const PersonalInformationForm = () => {
           className="h-32"
         />
       </div>
-      <div>{currentResume}</div>
     </Card>
   );
 };

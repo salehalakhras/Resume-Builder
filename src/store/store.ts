@@ -7,8 +7,8 @@ import { loadResumes, changeResume } from '../store/resumeSlice';
 const localStorageMiddleware: Middleware = (store) => (next) => (action: any) => {
   const result = next(action);
 
-  if (action.type  
- === 'yourApp/initialize') {
+  if (action.type
+    === 'yourApp/initialize') {
     const storedResumes = localStorage.getItem('resumes');
     if (storedResumes) {
       const parsedResumes: ResumeData[] = JSON.parse(storedResumes);

@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Education, ResumeData } from "../types";
+import { Education, ResumeData } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 
 const EducationForm = () => {
