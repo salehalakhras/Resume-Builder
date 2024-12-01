@@ -10,11 +10,11 @@ const ExperiencePreview = ({ experiences }: { experiences: Experience[] }) => {
                         <div key={exp.id} className="mb-4">
                             <div className="flex justify-between">
                                 <strong>{exp.title}</strong>
-                                <span>{exp.company}</span>
+                                <div className="text-gray-600">
+                                    {exp.startDate.split('-').reverse().join('/').substring(3, 10)} - {exp.endDate.split('-').reverse().join('/').substring(3, 10)}
+                                </div>
                             </div>
-                            <div className="text-gray-600">
-                                {exp.startDate} - {exp.endDate}
-                            </div>
+                            <span>{exp.company}</span>
                             <p className="mt-2">{exp.description}</p>
                         </div>
                     ))}

@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Experience, ResumeData } from "../../types";
+import { Experience, ResumeData } from "../../../types";
 import { useDispatch, useSelector } from "react-redux";
 
 const ExperienceForm = () => {
@@ -63,7 +63,7 @@ const ExperienceForm = () => {
         <h2 className="text-2xl font-bold">Experience</h2>
         <Button onClick={addExperience} size="sm"
           className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
-          <Plus className="w-4 h-4 mr-2" /> Add Experience
+          <Plus className="w-4 h-4 mr-2" /> Add
         </Button>
       </div>
       {resume.experiences.map((exp) => (
@@ -89,31 +89,37 @@ const ExperienceForm = () => {
               updateExperience(exp.id, "company", e.target.value)
             }
           />
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col md:flex-row">
             <Input
               placeholder="Start Date"
-              type="date"
-              value={exp.startDate + "-01"}
+              type="text"
+              value={exp.startDate}
               onChange={(e) => {
-                const selectedDate = new Date(e.target.value);
-                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2,
-                  '0')}`;
-                updateExperience(exp.id, "startDate", formattedDate)
+                updateExperience(exp.id, "startDate", e.target.value)
               }
-
               }
+              onFocus={(e) => {
+                e.target.type = "date";
+                e.target.click()
+              }}
+              onBlur={(e) => {
+                e.target.type = "text";
+              }}
             />
             <Input
               placeholder="End Date"
-              type="date"
-              value={exp.endDate + "-01"}
+              type="text"
+              value={exp.endDate}
               onChange={(e) => {
-                const selectedDate = new Date(e.target.value);
-                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2,
-                  '0')}`;
-                updateExperience(exp.id, "endDate", formattedDate)
+                updateExperience(exp.id, "endDate", e.target.value)
               }
               }
+              onFocus={(e) => {
+                e.target.type = "date";
+              }}
+              onBlur={(e) => {
+                e.target.type = "text";
+              }}
             />
           </div>
           <Textarea

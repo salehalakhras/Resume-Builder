@@ -1,18 +1,16 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 //@ts-expect-error "There are no types for this library"
 import html2pdf from "html2pdf.js";
 import { useSelector } from "react-redux";
-import PersonalInfoPreview from "./Preview/PersonalInfoPreview";
-import ExperiencePreview from "./Preview/ExperiencePreview";
-import EducationPerview from "./Preview/EducationPerview";
-import ProjectsPreview from "./Preview/ProjectsPreview";
-import CertificationsPreview from "./Preview/CertificationsPreview";
-import LanguagesPreview from "./Preview/LanguagesPreview";
-import SkillsPreview from "./Preview/SkillsPreview";
-
+import PersonalInfoPreview from "./ContentTab/Preview/PersonalInfoPreview";
+import ExperiencePreview from "./ContentTab/Preview/ExperiencePreview";
+import EducationPerview from "./ContentTab/Preview/EducationPerview";
+import ProjectsPreview from "./ContentTab/Preview/ProjectsPreview";
+import CertificationsPreview from "./ContentTab/Preview/CertificationsPreview";
+import LanguagesPreview from "./ContentTab/Preview/LanguagesPreview";
+import SkillsPreview from "./ContentTab/Preview/SkillsPreview";
 
 const PreviewSection = () => {
 
@@ -55,17 +53,18 @@ const PreviewSection = () => {
             style={{
               width: '210mm',
               height: '297mm',
+              transform: 'scale(1)',
               transformOrigin: 'top center',
               backgroundColor: 'white',
               boxShadow: '0 0 10px rgba(0,0,0,0.1)',
               margin: '0 auto',
             }}
-            className="relative"
+            className="relative overflow-hidden"
           >
             {/* Content Container */}
             <div
               id="resume-preview"
-              className="h-full w-full p-8 dark:text-black font-merri "
+              className="absulute top-0 left-0 right-0 p-8 dark:text-black font-merri origin-center"
             >
               <PersonalInfoPreview personalInformation={resume.personalInformation} />
               <ExperiencePreview experiences={resume.experiences} />

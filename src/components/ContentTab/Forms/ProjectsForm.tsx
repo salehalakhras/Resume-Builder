@@ -1,10 +1,9 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Project, ResumeData } from "../../types";
+import { Project, ResumeData } from "../../../types";
 import { useSelector, useDispatch } from "react-redux";
 
 const ProjectsForm = () => {
@@ -59,7 +58,7 @@ const ProjectsForm = () => {
           size="sm"
           className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300"
         >
-          <Plus className="w-4 h-4 mr-2" /> Add Project
+          <Plus className="w-4 h-4 mr-2" /> Add
         </Button>
       </div>
       {resume.projects && resume.projects.map((project: Project) => (

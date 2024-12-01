@@ -69,9 +69,9 @@ const PersonalInfoPreview = ({ personalInformation }: { personalInformation: Per
 
             {personalInformation.summary && (
                 <div>
-                    <h2 className="text-xl uppercase font-bold border-b border-slate-600  mb-2 mt-2">
+                    <div className="text-xl uppercase font-bold border-b border-slate-600  mb-2 mt-2">
                         Summary
-                    </h2>
+                    </div>
                     <p className="text-wrap">{personalInformation.summary}</p>
                 </div>
             )}

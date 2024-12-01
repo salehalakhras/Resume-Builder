@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
-import { Certification, ResumeData } from '../../types';
+import { Certification, ResumeData } from '../../../types';
 import { useSelector, useDispatch } from 'react-redux';
 
 const CertificationForm = () => {
@@ -52,7 +52,7 @@ const CertificationForm = () => {
           size="sm"
           className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300"
         >
-          <Plus className="w-4 h-4 mr-2" /> Add Certification
+          <Plus className="w-4 h-4 mr-2" /> Add
         </Button>
       </div>
       {resume.certifications && resume.certifications.map((cert: Certification) => (
@@ -76,18 +76,22 @@ const CertificationForm = () => {
             value={cert.issuer}
             onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <Input
-              placeholder="Issue Date"
-              type="date"
+              placeholder="Issue Date (optional)"
+              type="text"
               value={cert.date}
               onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
+              onFocus={(e) => (e.target.type = 'date')}
+              onBlur={(e) => (e.target.type = 'text')}
             />
             <Input
               placeholder="Expiry Date (optional)"
-              type="date"
+              type="text"
               value={cert.expiryDate}
               onChange={(e) => updateCertification(cert.id, 'expiryDate', e.target.value)}
+              onFocus={(e) => (e.target.type = 'date')}
+              onBlur={(e) => (e.target.type = 'text')}
             />
           </div>
         </div>

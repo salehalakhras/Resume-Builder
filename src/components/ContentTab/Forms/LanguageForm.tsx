@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Language, ResumeData } from "../../types";
+import { Language, ResumeData } from "../../../types";
 import { useSelector, useDispatch } from "react-redux";
 
 const LanguageForm = () => {
@@ -47,7 +47,7 @@ const LanguageForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Languages</h2>
         <Button onClick={addLanguage} size="sm" className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
-          <Plus className="w-4 h-4 mr-2" /> Add Language
+          <Plus className="w-4 h-4 mr-2" /> Add
         </Button>
       </div>
       {resume.languages && resume.languages.map((lang: Language) => (

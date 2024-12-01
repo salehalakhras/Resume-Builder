@@ -48,8 +48,8 @@ export const resumeSlice = createSlice({
                 state.resumes[index] = action.payload;
             }
         },
-        deleteResume: (state, action: PayloadAction<string>) => {
-            state.resumes = state.resumes.filter((resume) => resume.id !== action.payload);
+        deleteResume: (state, action: PayloadAction<number>) => {
+            state.resumes = state.resumes.filter((_resume, index) => index !== action.payload);
         },
         changeResume: (state, action: PayloadAction<number>) => {
             state.currentResume = action.payload;

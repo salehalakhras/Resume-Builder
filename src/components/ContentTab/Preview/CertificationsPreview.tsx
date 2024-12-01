@@ -5,7 +5,7 @@ const CertificationsPreview = ({ certifications }: { certifications: Certificati
         <>
             {certifications.length > 0 && (
                 <div>
-                    <h2 className="text-xl uppercase font-bold border-b border-slate-600">
+                    <h2 className="text-xl uppercase font-bold border-b border-slate-600 mb-2 mt-2">
                         Certifications
                     </h2>
                     {certifications.map((cert: Certification) => (
@@ -14,7 +14,6 @@ const CertificationsPreview = ({ certifications }: { certifications: Certificati
                                 <strong>{cert.name}</strong>
                                 <span>{cert.issuer}</span>
                             </div>
-                            <div className="text-gray-600">{cert.date}</div>
                         </div>
                     ))}
                 </div>

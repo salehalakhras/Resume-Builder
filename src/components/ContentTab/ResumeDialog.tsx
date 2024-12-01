@@ -9,7 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from 'lucide-react';
-import { useSelector, useDispatch } from 'react-redux';
 
 
 const ResumeDialog = ({ addResume }: { addResume: (name: string) => void }) => {

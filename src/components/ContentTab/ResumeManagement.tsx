@@ -1,6 +1,4 @@
-import React from 'react'
 import ResumeDialog from './ResumeDialog'
-import { deleteResume } from '@/store/resumeSlice';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,7 +8,7 @@ import {
   } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Copy, Trash2, File } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { ResumeData } from '@/types';
 
 const ResumeManagement = () => {
@@ -61,7 +59,7 @@ const ResumeManagement = () => {
     };
 
     const removeResume = (id: number) => {
-      dispatch({ type: 'resumes/removeResume', payload: id });
+      dispatch({ type: 'resumes/deleteResume', payload: id });
     };
 
     const changeResume = (id: number) => {

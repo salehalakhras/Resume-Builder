@@ -63,4 +63,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* The html2pdf library when creating a pdf it converts text to images,
+   and tailwind by default changes the img sizing, so this is a fix for that */
+  img {
+    display: initial;
+  }
 }

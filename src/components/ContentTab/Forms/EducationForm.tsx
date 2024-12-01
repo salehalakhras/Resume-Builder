@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
-import { Education, ResumeData } from "../../types";
+import { Education, ResumeData } from "../../../types";
 import { useDispatch, useSelector } from "react-redux";
 
 const EducationForm = () => {
@@ -49,7 +49,7 @@ const EducationForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Education</h2>
         <Button onClick={addEducation} size="sm" className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
-          <Plus className="w-4 h-4 mr-2" /> Add Education
+          <Plus className="w-4 h-4 mr-2" /> Add
         </Button>
       </div>
       {resume.education && resume.education.map((edu: Education) => (
@@ -78,11 +78,11 @@ const EducationForm = () => {
             value={edu.grade}
             onChange={(e) => updateEducation(edu.id, "grade", e.target.value)}
           />
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
 
             <Input
               placeholder="Start Year"
-              type="date"
+              type="text"
               value={edu.startDate}
               onChange={(e) => {
                 const selectedDate = new Date(e.target.value);
@@ -90,10 +90,16 @@ const EducationForm = () => {
                 updateEducation(edu.id, "startDate", formattedDate);
               }
               }
+              onFocus={(e) => {
+                e.target.type = "date";
+              }}
+              onBlur={(e) => {
+                e.target.type = "text";
+              }}
             />
             <Input
               placeholder="End Year"
-              type="date"
+              type="text"
               value={edu.endDate}
               onChange={(e) => {
                 const selectedDate = new Date(e.target.value);
@@ -101,6 +107,12 @@ const EducationForm = () => {
                 updateEducation(edu.id, "endDate", formattedDate);
               }
               }
+              onFocus={(e) => {
+                e.target.type = "date";
+              }}
+              onBlur={(e) => {
+                e.target.type = "text";
+              }}
             />
           </div>
         </div>

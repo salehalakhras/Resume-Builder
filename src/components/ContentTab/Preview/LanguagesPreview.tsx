@@ -5,7 +5,7 @@ const LanguagesPreview = ({ languages }: { languages: Language[] }) => {
         <>
             {languages.length > 0 && (
                 <div>
-                    <h2 className="text-xl uppercase font-bold border-b border-slate-600 mb-2">Languages</h2>
+                    <h2 className="text-xl uppercase font-bold border-b border-slate-600 mb-2 mt-2">Languages</h2>
                     <ul className="grid grid-cols-2">
                         {languages.map((lang: Language) => (
                             <li key={lang.id} className="text-sm">

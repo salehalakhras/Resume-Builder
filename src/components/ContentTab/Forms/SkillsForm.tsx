@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -49,7 +48,7 @@ const SkillsForm = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Skills</h2>
         <Button onClick={addSkill} size="sm" className="font-bold dark:bg-slate-200 dark:hover:bg-slate-300">
-          <Plus className="w-4 h-4 mr-2" /> Add Skill
+          <Plus className="w-4 h-4 mr-2" /> Add
         </Button>
       </div>
       {resume.skills && resume.skills.map((skill: Skill) => (
