@@ -24,8 +24,8 @@ const PreviewSection = () => {
 
     const opt = {
       filename: `${resume.name}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
+      image: { type: "jpeg", quality: 0.9 },
+      html2canvas: { scale: 3 },
       jsPDF: { unit: "mm", orientation: "portrait", format: "a4" },
     };
 

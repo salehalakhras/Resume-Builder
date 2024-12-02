@@ -16,7 +16,6 @@ const CertificationForm = () => {
       id: Date.now(),
       name: '',
       issuer: '',
-      date: '',
     };
     const updatedResume: ResumeData = {
       ...resume,
@@ -76,24 +75,6 @@ const CertificationForm = () => {
             value={cert.issuer}
             onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
           />
-          <div className="flex flex-col md:flex-row gap-4">
-            <Input
-              placeholder="Issue Date (optional)"
-              type="text"
-              value={cert.date}
-              onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
-              onFocus={(e) => (e.target.type = 'date')}
-              onBlur={(e) => (e.target.type = 'text')}
-            />
-            <Input
-              placeholder="Expiry Date (optional)"
-              type="text"
-              value={cert.expiryDate}
-              onChange={(e) => updateCertification(cert.id, 'expiryDate', e.target.value)}
-              onFocus={(e) => (e.target.type = 'date')}
-              onBlur={(e) => (e.target.type = 'text')}
-            />
-          </div>
         </div>
       ))}
     </Card>

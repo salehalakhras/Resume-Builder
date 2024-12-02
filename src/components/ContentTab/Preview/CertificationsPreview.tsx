@@ -10,9 +10,9 @@ const CertificationsPreview = ({ certifications }: { certifications: Certificati
                     </h2>
                     {certifications.map((cert: Certification) => (
                         <div key={cert.id} className="">
-                            <div className="flex justify-between">
+                            <div>
                                 <strong>{cert.name}</strong>
-                                <span>{cert.issuer}</span>
+                                <span> | {cert.issuer}</span>
                             </div>
                         </div>
                     ))}
